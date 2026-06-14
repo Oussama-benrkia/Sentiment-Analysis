@@ -182,6 +182,12 @@ Replace the `Vocabulary.encode` step with `tokenizer(text, padding='max_length',
 
 ---
 
+## Interface
+
+![Sentiment Analysis web app — positive result with 88.3% confidence](docs/demo.png)
+
+---
+
 ## Results
 
 Trained on IMDb — 25 000 train / 25 000 test, binary labels.
