@@ -1,0 +1,182 @@
+/* ── Reset & base ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.container {
+    width: 100%;
+    max-width: 660px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header {
+    text-align: center;
+    color: #fff;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* ── Input card ──────────────────────────────────────────────── */
+.input-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+textarea {
+    width: 100%;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #2d3748;
+    resize: vertical;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Example buttons */
+.examples {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+.examples-label {
+    font-size: 0.8rem;
+    color: #718096;
+    font-weight: 500;
+}
+.example-btn {
+    font-size: 0.78rem;
+    background: #f7fafc;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+.example-btn:hover { background: #edf2f7; }
+
+/* Analyse button */
+#analyze-btn {
+    margin-top: 18px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+#analyze-btn:hover:not(:disabled) { opacity: 0.92; transform: translateY(-1px); }
+#analyze-btn:active:not(:disabled) { transform: translateY(0); }
+#analyze-btn:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Result card ─────────────────────────────────────────────── */
+.result-card {
+    text-align: center;
+    border-left: 6px solid #cbd5e0;
+    transition: border-color 0.3s;
+}
+.result-card.positive { border-left-color: #48bb78; }
+.result-card.negative { border-left-color: #fc8181; }
+.result-card.neutral  { border-left-color: #f6ad55; }
+
+.result-emoji { font-size: 4rem; line-height: 1; margin-bottom: 10px; }
+
+.result-label {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #2d3748;
+    margin-bottom: 14px;
+}
+
+.confidence-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.result-conf-text {
+    font-size: 0.9rem;
+    color: #718096;
+    font-weight: 500;
+}
+.confidence-bar-track {
+    width: 100%;
+    max-width: 320px;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+}
+.confidence-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #48bb78);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+}
+
+/* ── Error ───────────────────────────────────────────────────── */
+.error-box {
+    background: #fff5f5;
+    border: 1.5px solid #fc8181;
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #c53030;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* ── Utility ─────────────────────────────────────────────────── */
+.hidden { display: none; }

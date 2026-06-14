@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <h1>Sentiment Analysis</h1>
+            <p class="subtitle">Powered by a PyTorch BiLSTM trained on IMDb reviews</p>
+        </header>
+
+        <div class="card input-card">
+            <label for="text-input" class="input-label">Enter text to analyse</label>
+            <textarea
+                id="text-input"
+                rows="6"
+                placeholder="Paste a movie review, tweet, or product review here…
+(Ctrl + Enter to submit)"
+            ></textarea>
+
+            <div class="examples">
+                <span class="examples-label">Try an example:</span>
+                <button class="example-btn" onclick="useExample(this)">
+                    This movie was absolutely brilliant — a masterpiece.
+                </button>
+                <button class="example-btn" onclick="useExample(this)">
+                    Terrible film. Worst two hours of my life.
+                </button>
+            </div>
+
+            <button id="analyze-btn" onclick="analyze()">Analyse Sentiment</button>
+        </div>
+
+        <div id="result" class="card result-card hidden">
+            <div id="result-emoji" class="result-emoji"></div>
+            <div id="result-label" class="result-label"></div>
+            <div class="confidence-row">
+                <span id="result-conf-text" class="result-conf-text"></span>
+                <div class="confidence-bar-track">
+                    <div id="result-conf-bar" class="confidence-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-box" class="error-box hidden"></div>
+
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+
+        async function analyze() {
+            const text = $('text-input').value.trim();
+            const btn  = $('analyze-btn');
+
+            hideAll();
+
+            if (!text) {
+                showError('Please enter some text before analysing.');
+                return;
+            }
+
+            btn.disabled    = true;
+            btn.textContent = 'Analysing…';
+
+            try {
+                const res = await fetch('/predict', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ text })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.detail || `Server error ${res.status}`);
+                }
+
+                const data = await res.json();
+                showResult(data);
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                btn.disabled    = false;
+                btn.textContent = 'Analyse Sentiment';
+            }
+        }
+
+        function showResult({ sentiment, emoji, confidence }) {
+            const card = $('result');
+            card.className = 'card result-card ' + sentiment.toLowerCase();
+
+            $('result-emoji').textContent     = emoji;
+            $('result-label').textContent     = sentiment;
+            $('result-conf-text').textContent = `Confidence: ${confidence}%`;
+            $('result-conf-bar').style.width  = confidence + '%';
+
+            card.classList.remove('hidden');
+        }
+
+        function showError(msg) {
+            const box = $('error-box');
+            box.textContent = '⚠ ' + msg;
+            box.classList.remove('hidden');
+        }
+
+        function hideAll() {
+            $('result').classList.add('hidden');
+            $('error-box').classList.add('hidden');
+        }
+
+        function useExample(btn) {
+            $('text-input').value = btn.textContent.trim();
+            analyze();
+        }
+
+        // Ctrl + Enter shortcut
+        $('text-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter' && e.ctrlKey) analyze();
+        });
+    </script>
+</body>
+</html>
